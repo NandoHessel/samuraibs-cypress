@@ -1,5 +1,4 @@
 
-import dashElements from '../../elements/dash/dashElements'
 import header from '../../components/header/header'
 
 class DashPage {
