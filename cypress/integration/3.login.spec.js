@@ -16,7 +16,7 @@ describe('Login', function () {
             loginPage.go()
             loginPage.form(user)
             loginPage.submit()
-            dashPage.validate(user.name)
+            dashPage.header.userLoggedIn(user.name)
         })
     })
 
@@ -28,12 +28,11 @@ describe('Login', function () {
             password: "123"
         }
 
-        it('Deve logar com sucesso', function () {
+        it('Deve aparecer mensagem de erro', function () {
             loginPage.go()
             loginPage.form(user)
             loginPage.submit()
             loginPage.toast.shouldHaveText('Ocorreu um erro ao fazer login, verifique suas credenciais.')
         })
     })
-
 })
