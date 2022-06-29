@@ -2,8 +2,8 @@
 
 class LoginElements {
 
-    inputEmail = () => { return 'input[placeholder="E-mail"]' }
-    inputSenha = () => {return 'input[placeholder="Senha"]'}
+    inputEmail = () => { return 'input[placeholder="Seu email"]' }
+    inputSenha = () => {return 'input[placeholder="Sua senha secreta"]'}
     buttonLogin = () => {return '.sc-AxgMl'}
 
 }
