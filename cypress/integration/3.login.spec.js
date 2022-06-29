@@ -14,20 +14,7 @@ describe('Login', function () {
         }
 
         before(function () {
-            //limpa a massa do banco antes do teste
-            cy.task('removeUser', user.email)
-                .then(function (result) {
-                    console.log(result)
-                })
-
-            //pré cadastro por chamada de API antes da validação
-            cy.request(
-                'POST',
-                'http://localhost:3333/users',
-                user
-            ).then(function (response) {
-                expect(response.status).to.eq(200)
-            })
+           cy.postUser(user)
         })
 
         it('Deve logar com sucesso', function () {

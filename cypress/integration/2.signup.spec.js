@@ -44,20 +44,7 @@ describe('Cadastro', function () {
         }
 
         before(function () {
-            //instancia a função criada para interagir no BD
-            cy.task('removeUser', user.email)
-                .then(function (result) {
-                    console.log(result)
-                })
-
-            //pré cadastro por chamada de API antes da validação
-            cy.request(
-                'POST',
-                'http://localhost:3333/users',
-                user
-            ).then(function (response) {
-                expect(response.status).to.eq(200)
-            })
+            cy.postUser(user)
         })
 
         it('Deve exibir que email já está cadastrado', function () {
