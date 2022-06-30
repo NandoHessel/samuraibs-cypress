@@ -20,9 +20,9 @@ class SignupPage {
 
     //Preenche os dados 
     form(user) {
-        cy.get(signupElements.inputNome()).type(user.name)
-        cy.get(signupElements.inputEmail()).type(user.email)
-        cy.get(signupElements.inputSenha()).type(user.password)
+        cy.get(signupElements.inputNome()).clear().type(user.name)
+        cy.get(signupElements.inputEmail()).clear().type(user.email)
+        cy.get(signupElements.inputSenha()).clear().type(user.password)
     }
 
     //clica em cadastrar

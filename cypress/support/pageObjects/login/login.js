@@ -1,11 +1,14 @@
 
 import loginElements from "../../elements/login/loginElements"
 import toast from "../../components/toast/toast"
+import alertError from "../../components/alertError/alertError"
 
 class LoginPage {
 
     constructor() {
         this.toast = toast
+        this.alertError = alertError
+
     }
 
     //abre a página
@@ -13,10 +16,10 @@ class LoginPage {
         cy.visit('/')
     }
 
-    //Preenche os dados 
+    //Preenche os dados após limpar os campos 
     form(user) {
-        cy.get(loginElements.inputEmail()).type(user.email)
-        cy.get(loginElements.inputSenha()).type(user.password)
+        cy.get(loginElements.inputEmail()).clear().type(user.email)
+        cy.get(loginElements.inputSenha()).clear().type(user.password)
     }
 
     //clica em entrar

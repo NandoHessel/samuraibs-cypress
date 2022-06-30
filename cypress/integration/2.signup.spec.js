@@ -1,21 +1,22 @@
 
 import signupPage from '../support/pageObjects/signup/signupPage'
 
-
 describe('Cadastro', function () {
 
-    context('Quando o usuário é novo', function () {
+    before(function() {
+        cy.fixture('signup').then(function(signup) {
+            this.success = signup.success
+            this.email_dup = signup.email_dup
+            this.email_inv = signup.email_inv
+        })
+    })
 
-        const user = {
-            name: 'Fernando Hessel',
-            email: 'nandohessel@hotmail.com',
-            password: 'pwd123'
-        }
+    context('Quando o usuário é novo', function () {
 
         before(function () {
 
             //instancia a função criada para interagir no BD
-            cy.task('removeUser', user.email)
+            cy.task('removeUser', this.success.email)
                 .then(function (result) {
                     console.log(result)
                 })
@@ -25,7 +26,7 @@ describe('Cadastro', function () {
             //abre a página
             signupPage.go()
             //Preenche os dados 
-            signupPage.form(user)
+            signupPage.form(this.success)
             //clica em cadastrar
             signupPage.submit()
             //valida o texto
@@ -36,22 +37,15 @@ describe('Cadastro', function () {
 
     context('Quando o email já existe', function () {
 
-        const user = {
-            name: 'João Lucas',
-            email: 'joao@samuraibs.com',
-            password: 'pwd123',
-            is_provider: true
-        }
-
         before(function () {
-            cy.postUser(user)
+            cy.postUser(this.email_dup)
         })
 
         it('Deve exibir que email já está cadastrado', function () {
             //abre a página
             signupPage.go()
             //Preenche os dados 
-            signupPage.form(user)
+            signupPage.form(this.email_dup)
             //clica em cadastrar
             signupPage.submit()
             //valida o texto
@@ -61,17 +55,12 @@ describe('Cadastro', function () {
     })
 
     context('Quando o email é incorreto', function () {
-        const user = {
-            name: 'Elizabeth Olsen',
-            email: 'liza.yahoo.com',
-            password: 'pwd123'
-        }
 
         it('Deve exibir mensagem de alerta', function () {
             //abre a página
             signupPage.go()
             //Preenche os dados 
-            signupPage.form(user)
+            signupPage.form(this.email_inv)
             //clica em cadastrar
             signupPage.submit()
             //valida msg de erro do email inválido
@@ -80,13 +69,16 @@ describe('Cadastro', function () {
     })
 
     context('Quando a senha tem menos de 6 caractéres', function () {
+
+        before(function() {
+            //abre a página uma vez só 
+            signupPage.go()
+        })
+
         //uma lista com 5 senhas abaixo de 6 caracteres
         const passwords = ['1', '2a', '3ab', '4abc', '5abcd']
         //abre a tela antes de cada execução
-        beforeEach(function () {
-            //abre a página
-            signupPage.go()
-        })
+    
         //executa o it por 5 vezes testando cada umas das senhas informadas
         passwords.forEach(function (p) {
             it('Não deve cadastrar para uma senha menor do que 6 caracteres. Senhas testadas: ' + p, function () {
