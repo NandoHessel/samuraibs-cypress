@@ -2,9 +2,10 @@
 import loginPage from '../support/pageObjects/login/login'
 import dashPage from '../support/pageObjects/dash/dashPage'
 
+
 describe('Login', function () {
 
-    context('Com usuário válido', function () {
+    context('Com usuário válido com senha válida', function () {
 
         const user = {
             name: "Fernando Hessel",
@@ -14,7 +15,7 @@ describe('Login', function () {
         }
 
         before(function () {
-           cy.postUser(user)
+            cy.postUser(user)
         })
 
         it('Deve logar com sucesso', function () {
@@ -25,15 +26,24 @@ describe('Login', function () {
         })
     })
 
-    context('Com usuário inválido', function () {
+    context('Com usuário inválido com senha inválida', function () {
 
-        const user = {
-            name: "Fernando Hessel",
-            email: "nandohessel@hotmail.com",
-            password: "123"
+        let user = {
+            name: "Celso Kamura",
+            email: "kamura@samuraibs.com",
+            password: "pwd123",
+            is_provider: true
         }
 
-        it('Deve aparecer mensagem de erro', function () {
+        /*realiza o pré cadastro do usuário válido e após isso realiza-se a alteração da 
+        senha com o auxilio da função THEN*/
+        before(function () {
+            cy.postUser(user).then(function() {
+                user.password = "abc123"
+            })
+        })
+
+        it('Deve aparecer mensagem de erro de credenciais', function () {
             loginPage.go()
             loginPage.form(user)
             loginPage.submit()
