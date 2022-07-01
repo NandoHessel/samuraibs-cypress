@@ -5,6 +5,12 @@ import dashPage from '../support/pageObjects/dash/dashPage'
 
 describe('Login', function () {
 
+    before(function() {
+        cy.fixture('login').then(function(login) {
+            this.success = login.success
+        })
+    })
+
     context('Com usuário válido com senha válida', function () {
 
         const user = {
@@ -15,14 +21,14 @@ describe('Login', function () {
         }
 
         before(function () {
-            cy.postUser(user)
+            cy.postUser(this.success)
         })
 
         it('Deve logar com sucesso', function () {
             loginPage.go()
-            loginPage.form(user)
+            loginPage.form(this.success)
             loginPage.submit()
-            dashPage.header.userLoggedIn(user.name)
+            dashPage.header.userLoggedIn(this.success.name)
         })
     })
 
