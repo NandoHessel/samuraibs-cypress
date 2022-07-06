@@ -3,7 +3,7 @@ import componentsElements from "../componentsElements"
 class Toast {
     //realiza a validação
     shouldHaveText(expectMessage) {
-        cy.get(componentsElements.toast())
+        cy.get(componentsElements.toast(), {timeout: 10000})
             .should('be.visible')
             .find('p')
             .should('have.text', expectMessage)

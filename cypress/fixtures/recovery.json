@@ -1,0 +1,12 @@
+{
+    "user": {
+        "name": "Monalisa",
+        "email": "lisa@samuraibs.com",
+        "password": "pwd123",
+        "is_provider": true
+    },
+    "resetPass": {
+        "email": "lisa@samuraibs.com",
+        "newPass": "abc123"
+    }
+}

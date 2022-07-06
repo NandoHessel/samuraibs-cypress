@@ -27,6 +27,15 @@ class LoginPage {
         cy.get(loginElements.buttonLogin()).click()
     }
 
+    //clica em recuperar a senha
+    recovery() {
+        cy.get(loginElements.buttonForgot()).click()
+    }
+
+    formReset(resetPass) {
+        cy.get(loginElements.inputEmail()).clear().type(resetPass.email)
+        cy.get(loginElements.inputSenha()).clear().type(resetPass.newPass)
+    }
 
 }
 
