@@ -42,6 +42,7 @@ Cypress.Commands.add('postUser', function (user) {
     })
 })
 
+//Comando para realizar a requisição da troca de senha e armazenar o token da requisição
 Cypress.Commands.add('recoveryPass', function (email) {
     cy.request(
         'POST',
@@ -55,4 +56,70 @@ Cypress.Commands.add('recoveryPass', function (email) {
                 Cypress.env('recoveryToken', result.token)
             })
     })
+})
+
+//Comando para realizar o acesso do usuário via API e armazenamento do token
+Cypress.Commands.add('apiLogin', function(user){
+    const payload = {
+        email: user.email,
+        password: user.password
+    }
+
+    cy.request({
+        method: 'POST',
+        url: 'http://localhost:3333/sessions',
+        body: payload
+    }).then(function(response) {
+        expect(response.status).to.eq(200)
+        Cypress.env('apiToken', response.body.token)
+    })
+})
+
+//Comando para buscar o samurai disponível utilizando o token de validação do usuário
+Cypress.Commands.add('setProviderId', function(providerEmail) {
+    cy.request({
+        method: 'GET',
+        url: 'http://localhost:3333/providers',
+        headers: {
+            authorization: 'Bearer ' + Cypress.env('apiToken')
+        }
+    }).then(function(response) {
+        expect(response.status).to.eq(200)
+        console.log(response.body)
+
+        const providerList = response.body
+        //verifica se o email do response é igual ao email da massa de dados informada e armazena o id na variável
+        providerList.forEach(function(provider) {
+            if (provider.email == providerEmail) {
+                Cypress.env('providerId', provider.id)
+            }
+        })
+    })
+})
+
+//cria o agendamento via API
+import moment from 'moment'
+Cypress.Commands.add('createAppointment', function() {
+    let now = new Date()
+
+    now.setDate(now.getDate() + 1)
+
+    const date = moment(now).format('YYYY-MM-DD 14:00:00')
+
+    const payload = {
+        provider_id: Cypress.env('providerId'),
+        date: date
+    }
+
+    cy.request({
+        method: 'POST',
+        url: 'http://localhost:3333/appointments',
+        body: payload,
+        headers: {
+            authorization: 'Bearer ' + Cypress.env('apiToken')
+        }
+    }).then(function(response) {
+        expect(response.status).to.eq(200)
+    })
+
 })

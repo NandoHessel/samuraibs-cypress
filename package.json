@@ -12,6 +12,7 @@
     "@faker-js/faker": "^6.3.1",
     "cypress": "^9.7.0",
     "cypress-real-events": "^1.7.0",
+    "moment": "^2.29.4",
     "pg": "^8.7.3"
   }
 }

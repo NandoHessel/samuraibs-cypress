@@ -2,12 +2,14 @@
 import loginElements from "../../elements/login/loginElements"
 import toast from "../../components/toast/toast"
 import alertError from "../../components/alertError/alertError"
+import header from '../../components/header/header'
 
 class LoginPage {
 
     constructor() {
         this.toast = toast
         this.alertError = alertError
+        this.header = header
 
     }
 

@@ -38,7 +38,7 @@ describe('Resgate de senha', function () {
             cy.recoveryPass(this.data.email)
         })
 
-        it.only('Deve poder cadastrar uma nova senha', function () {
+        it('Deve poder cadastrar uma nova senha', function () {
 
             //armazena o token obtido do banco de dados
             const token = Cypress.env('recoveryToken')

@@ -1,0 +1,14 @@
+{
+    "cliente": {
+        "name": "Nikk Sixx",
+        "email": "sixx@yahoo.com",
+        "password": "pwd123",
+        "is_provider": false
+    },
+    "provider": {
+        "name": "Ramon Valdes",
+        "email": "ramon@samuraibs.com",
+        "password": "pwd123",
+        "is_provider": true
+    }
+}
