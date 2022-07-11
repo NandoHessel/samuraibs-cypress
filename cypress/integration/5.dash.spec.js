@@ -1,5 +1,5 @@
 
-import login from '../support/pageObjects/login/login'
+import dashPage from '../support/pageObjects/dash/dashPage'
 import loginPage from '../support/pageObjects/login/login'
 
 describe('Dashboard', function () {
@@ -39,8 +39,19 @@ describe('Dashboard', function () {
             loginPage.form(this.provider)
             loginPage.submit()
             loginPage.header.userLoggedIn(this.provider.name)
-
             cy.wait(3000)
+            dashPage.calendarShouldBeVisible()
+
+            const day = Cypress.env('appointmentDay')
+            dashPage.selectDay(day)
+
+            dashPage.appointmentShouldBeVisible(this.cliente)
+
+            const appointmentHour = '14:00'
+            dashPage.hourValidate(appointmentHour)
+            
+
+
         })
     })
 })
