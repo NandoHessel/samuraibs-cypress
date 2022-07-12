@@ -36,13 +36,14 @@ describe('Dashboard', function () {
             cy.createAppointment()
         })
 
+        
         it('O mesmo deve ser exibido no dashboard', function () {
 
             loginPage.go()
             loginPage.form(provider)
             loginPage.submit()
             loginPage.header.userLoggedIn(provider.name)
-            cy.wait(3000)
+            //cy.wait(3000)
             dashPage.calendarShouldBeVisible()
 
             const day = Cypress.env('appointmentDay')
@@ -51,10 +52,8 @@ describe('Dashboard', function () {
             dashPage.appointmentShouldBeVisible(customer)
 
             //const appointmentHour = '14:00'
-            dashPage.hourValidate(appointment.hour)
-            
-
-
+            const hour = Cypress.env('hour')
+            dashPage.hourValidate(hour)   
         })
     })
 })

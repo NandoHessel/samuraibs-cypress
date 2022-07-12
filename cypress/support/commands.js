@@ -23,7 +23,7 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
-
+import {apiServer} from '../../cypress.json'
 
 Cypress.Commands.add('postUser', function (user) {
     //limpa a massa do banco antes do teste
@@ -35,7 +35,7 @@ Cypress.Commands.add('postUser', function (user) {
     //pré cadastro por chamada de API antes da validação
     cy.request(
         'POST',
-        'http://localhost:3333/users',
+        apiServer + '/users',
         user
     ).then(function (response) {
         expect(response.status).to.eq(200)
@@ -46,7 +46,7 @@ Cypress.Commands.add('postUser', function (user) {
 Cypress.Commands.add('recoveryPass', function (email) {
     cy.request(
         'POST',
-        'http://localhost:3333/password/forgot',
+        apiServer + '/password/forgot',
         { email: email }
     ).then(function (response) {
         expect(response.status).to.eq(204)
@@ -67,7 +67,7 @@ Cypress.Commands.add('apiLogin', function(user){
 
     cy.request({
         method: 'POST',
-        url: 'http://localhost:3333/sessions',
+        url: apiServer + '/sessions',
         body: payload
     }).then(function(response) {
         expect(response.status).to.eq(200)
@@ -79,7 +79,7 @@ Cypress.Commands.add('apiLogin', function(user){
 Cypress.Commands.add('setProviderId', function(providerEmail) {
     cy.request({
         method: 'GET',
-        url: 'http://localhost:3333/providers',
+        url: apiServer + '/providers',
         headers: {
             authorization: 'Bearer ' + Cypress.env('apiToken')
         }
@@ -99,14 +99,16 @@ Cypress.Commands.add('setProviderId', function(providerEmail) {
 
 //cria o agendamento via API
 import moment from 'moment'
+import {appointment} from '../support/factories/dash/dashFactories'
 Cypress.Commands.add('createAppointment', function() {
     let now = new Date()
 
     now.setDate(now.getDate() + 1)
 
     Cypress.env('appointmentDay', now.getDate())
-    
-    const date = moment(now).format('YYYY-MM-DD 14:00:00')
+
+    const date = moment(now).format('YYYY-MM-DD ' + appointment.hour + ':00')
+    Cypress.env('hour', appointment.hour)
 
     const payload = {
         provider_id: Cypress.env('providerId'),
@@ -115,7 +117,7 @@ Cypress.Commands.add('createAppointment', function() {
 
     cy.request({
         method: 'POST',
-        url: 'http://localhost:3333/appointments',
+        url: apiServer + '/appointments',
         body: payload,
         headers: {
             authorization: 'Bearer ' + Cypress.env('apiToken')
@@ -123,5 +125,6 @@ Cypress.Commands.add('createAppointment', function() {
     }).then(function(response) {
         expect(response.status).to.eq(200)
     })
-
 })
+
+
