@@ -23,7 +23,10 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
-import {apiServer} from '../../cypress.json'
+import { apiServer } from '../../cypress.json'
+import moment from 'moment'
+import { appointment } from '../support/factories/dash/dashFactories'
+import loginPage from './pageObjects/login/login'
 
 Cypress.Commands.add('postUser', function (user) {
     //limpa a massa do banco antes do teste
@@ -59,7 +62,7 @@ Cypress.Commands.add('recoveryPass', function (email) {
 })
 
 //Comando para realizar o acesso do usuário via API e armazenamento do token
-Cypress.Commands.add('apiLogin', function(user){
+Cypress.Commands.add('apiLogin', function (user) {
     const payload = {
         email: user.email,
         password: user.password
@@ -69,27 +72,27 @@ Cypress.Commands.add('apiLogin', function(user){
         method: 'POST',
         url: apiServer + '/sessions',
         body: payload
-    }).then(function(response) {
+    }).then(function (response) {
         expect(response.status).to.eq(200)
         Cypress.env('apiToken', response.body.token)
     })
 })
 
 //Comando para buscar o samurai disponível utilizando o token de validação do usuário
-Cypress.Commands.add('setProviderId', function(providerEmail) {
+Cypress.Commands.add('setProviderId', function (providerEmail) {
     cy.request({
         method: 'GET',
         url: apiServer + '/providers',
         headers: {
             authorization: 'Bearer ' + Cypress.env('apiToken')
         }
-    }).then(function(response) {
+    }).then(function (response) {
         expect(response.status).to.eq(200)
         console.log(response.body)
 
         const providerList = response.body
         //verifica se o email do response é igual ao email da massa de dados informada e armazena o id na variável
-        providerList.forEach(function(provider) {
+        providerList.forEach(function (provider) {
             if (provider.email == providerEmail) {
                 Cypress.env('providerId', provider.id)
             }
@@ -98,9 +101,8 @@ Cypress.Commands.add('setProviderId', function(providerEmail) {
 })
 
 //cria o agendamento via API
-import moment from 'moment'
-import {appointment} from '../support/factories/dash/dashFactories'
-Cypress.Commands.add('createAppointment', function() {
+
+Cypress.Commands.add('createAppointment', function () {
     let now = new Date()
 
     now.setDate(now.getDate() + 1)
@@ -122,9 +124,17 @@ Cypress.Commands.add('createAppointment', function() {
         headers: {
             authorization: 'Bearer ' + Cypress.env('apiToken')
         }
-    }).then(function(response) {
+    }).then(function (response) {
         expect(response.status).to.eq(200)
     })
 })
+
+Cypress.Commands.add('uiLogin', function (user) {
+    loginPage.go()
+    loginPage.form(user)
+    loginPage.submit()
+    loginPage.header.userLoggedIn(user.name)
+})
+
 
 
