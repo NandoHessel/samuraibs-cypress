@@ -129,6 +129,7 @@ Cypress.Commands.add('createAppointment', function () {
     })
 })
 
+//APP Actions
 Cypress.Commands.add('uiLogin', function (user) {
     loginPage.go()
     loginPage.form(user)

@@ -14,6 +14,16 @@ class DashPage {
    }
 
    selectDay(day) {
+
+      let today = new Date()
+      //código para pegar o último dia do mês
+      let lastDayOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0)
+
+     
+      if (today.getDate() === lastDayOfMonth.getDate()) {
+         cy.get(dashElements.buttonNextMonth()).click()
+      }
+      
       const target = new RegExp('^' + day + '$', 'g')
       cy.contains(dashElements.day(), target)
          .click({ force: true })
@@ -26,7 +36,7 @@ class DashPage {
 
    hourValidate(hour) {
       cy.contains(dashElements.hourValidate(), hour)
-      .should('be.visible')
+         .should('be.visible')
    }
 
 }
