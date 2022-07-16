@@ -33,6 +33,8 @@ describe('Dashboard', function () {
             cy.setProviderId(provider.email)
 
             cy.createAppointment()
+
+            cy.screenshot()
         })
 
 
@@ -50,6 +52,8 @@ describe('Dashboard', function () {
             //const appointmentHour = '14:00'
             const hour = Cypress.env('hour')
             dashPage.hourValidate(hour)
+
+            cy.screenshot()
         })
     })
 })

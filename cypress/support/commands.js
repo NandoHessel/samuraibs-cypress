@@ -101,7 +101,6 @@ Cypress.Commands.add('setProviderId', function (providerEmail) {
 })
 
 //cria o agendamento via API
-
 Cypress.Commands.add('createAppointment', function () {
     let now = new Date()
 
